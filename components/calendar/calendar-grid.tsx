@@ -95,7 +95,7 @@ export function CalendarGrid({ initialPlans, certifications }: CalendarGridProps
               key={i}
               onClick={() => openCreate(day)}
               className={cn(
-                "min-h-[140px] border-b border-r p-1 cursor-pointer transition-colors hover:bg-muted/20",
+                "min-h-[160px] border-b border-r p-1 cursor-pointer transition-colors hover:bg-muted/20",
                 !isCurrentMonth && "bg-muted/10",
                 isLast && "border-r-0",
               )}
