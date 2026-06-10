@@ -41,7 +41,7 @@ export async function AppHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-        <Logo />
+        <Logo href={user ? "/calendar" : "/"} />
 
         <nav className="flex items-center gap-1">
           {user ? (

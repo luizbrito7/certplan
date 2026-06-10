@@ -3,9 +3,9 @@
 import Image from "next/image"
 import Link from "next/link"
 
-export function Logo() {
+export function Logo({ href = "/" }: { href?: string }) {
   return (
-    <Link href="/" className="flex items-center gap-2" aria-label="CertPlan home">
+    <Link href={href} className="flex items-center gap-2" aria-label="CertPlan home">
       <Image
         src="/logo-dark.png"
         alt="CertPlan"
