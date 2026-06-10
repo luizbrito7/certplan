@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { useLocale, useTranslations } from "next-intl"
-import { Loader2, Trash2, CheckCircle2, XCircle } from "lucide-react"
+import { CalendarIcon, Loader2, Trash2, CheckCircle2, XCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   Dialog,
@@ -13,11 +13,20 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { VendorIcon } from "@/components/icons/vendor-icon"
+import { CertLogo } from "@/components/icons/cert-logo"
 import { CertCombobox } from "./cert-combobox"
 import { createExamPlan, updateExamPlan, deleteExamPlan } from "@/lib/actions/exam-plans"
 import type { Certification, ExamPlan } from "@/lib/types"
@@ -38,6 +47,9 @@ interface EventDialogProps {
   onClose: () => void
   onSuccess: (plan: ExamPlan, action: "create" | "update" | "delete") => void
 }
+
+const HOURS = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, "0"))
+const MINUTES = Array.from({ length: 12 }, (_, i) => (i * 5).toString().padStart(2, "0"))
 
 export function EventDialog({ state, certifications, onClose, onSuccess }: EventDialogProps) {
   const t = useTranslations("eventDialog")
@@ -138,15 +150,40 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
     return `${datePart} ${tc("at")} ${timePart}`
   }
 
+  function getScheduledDate() {
+    return scheduledAt ? new Date(scheduledAt) : undefined
+  }
+
+  function updateScheduledDate(nextDate?: Date) {
+    if (!nextDate) return
+    const current = getScheduledDate()
+    nextDate.setHours(current?.getHours() ?? 9, current?.getMinutes() ?? 0, 0, 0)
+    setScheduledAt(format(nextDate, "yyyy-MM-dd'T'HH:mm"))
+  }
+
+  function updateScheduledTime(type: "hour" | "minute", value: string) {
+    const current = getScheduledDate() ?? date ?? new Date()
+    const next = new Date(current)
+    if (type === "hour") next.setHours(Number(value))
+    if (type === "minute") next.setMinutes(Number(value))
+    next.setSeconds(0, 0)
+    setScheduledAt(format(next, "yyyy-MM-dd'T'HH:mm"))
+  }
+
+  const selectedScheduledDate = getScheduledDate()
+
   return (
     <Dialog open={open} onOpenChange={v => !v && onClose()}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {mode === "create" ? t("scheduleTitle") : isViewMode ? t("viewTitle") : t("editTitle")}
-            {vendor && (
+            {(selectedCert ?? plan?.certification) && vendor && (
               <Badge className={cn("flex items-center gap-1.5", VENDOR_COLORS[vendor])} variant="secondary">
-                <VendorIcon vendor={vendor} className="h-3.5 w-3.5" />
+                <CertLogo
+                  cert={(selectedCert ?? plan?.certification)!}
+                  className="h-4 w-4"
+                />
                 {VENDOR_LABELS[vendor]}
               </Badge>
             )}
@@ -191,11 +228,64 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
                 {plan && formatDateTime(plan.scheduled_at)}
               </p>
             ) : (
-              <Input
-                type="datetime-local"
-                value={scheduledAt}
-                onChange={e => setScheduledAt(e.target.value)}
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start px-3 text-left font-normal",
+                      !scheduledAt && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="h-4 w-4" />
+                    {selectedScheduledDate
+                      ? formatDateTime(selectedScheduledDate.toISOString())
+                      : t("dateTime")}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="z-[60] w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={selectedScheduledDate}
+                    onSelect={updateScheduledDate}
+                    locale={dateLocale}
+                  />
+                  <div className="flex items-center gap-2 border-t p-3">
+                    <Select
+                      value={selectedScheduledDate ? format(selectedScheduledDate, "HH") : "09"}
+                      onValueChange={value => updateScheduledTime("hour", value)}
+                    >
+                      <SelectTrigger className="w-full cursor-pointer">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="z-[70] max-h-56">
+                        {HOURS.map(hour => (
+                          <SelectItem key={hour} value={hour} className="cursor-pointer">
+                            {hour}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <span className="text-sm text-muted-foreground">:</span>
+                    <Select
+                      value={selectedScheduledDate ? format(selectedScheduledDate, "mm") : "00"}
+                      onValueChange={value => updateScheduledTime("minute", value)}
+                    >
+                      <SelectTrigger className="w-full cursor-pointer">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="z-[70] max-h-56">
+                        {MINUTES.map(minute => (
+                          <SelectItem key={minute} value={minute} className="cursor-pointer">
+                            {minute}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
           </div>
 

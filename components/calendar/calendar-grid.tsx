@@ -18,7 +18,7 @@ import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 import type { Certification, ExamPlan } from "@/lib/types"
 import { CalendarHeader } from "./calendar-header"
-import { EventChip } from "./event-chip"
+import { EventEmblem } from "./event-emblem"
 import { EventDialog, type DialogState } from "./event-dialog"
 
 const WEEKDAY_KEYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const
@@ -85,8 +85,8 @@ export function CalendarGrid({ initialPlans, certifications }: CalendarGridProps
       <div className="grid grid-cols-7 flex-1">
         {days.map((day, i) => {
           const dayPlans = plansForDay(day)
-          const visible = dayPlans.slice(0, 3)
-          const overflow = dayPlans.length - 3
+          const visible = dayPlans.slice(0, 2)
+          const overflow = dayPlans.length - 2
           const isCurrentMonth = isSameMonth(day, currentDate)
           const isLast = i === days.length - 1
 
@@ -95,7 +95,7 @@ export function CalendarGrid({ initialPlans, certifications }: CalendarGridProps
               key={i}
               onClick={() => openCreate(day)}
               className={cn(
-                "min-h-[110px] border-b border-r p-1 cursor-pointer transition-colors hover:bg-muted/20",
+                "min-h-[140px] border-b border-r p-1 cursor-pointer transition-colors hover:bg-muted/20",
                 !isCurrentMonth && "bg-muted/10",
                 isLast && "border-r-0",
               )}
@@ -109,9 +109,9 @@ export function CalendarGrid({ initialPlans, certifications }: CalendarGridProps
               >
                 {format(day, "d")}
               </span>
-              <div className="mt-0.5 space-y-0.5">
+              <div className="mt-0.5 space-y-1">
                 {visible.map(plan => (
-                  <EventChip key={plan.id} plan={plan} onClick={e => openView(plan, e)} />
+                  <EventEmblem key={plan.id} plan={plan} onClick={e => openView(plan, e)} />
                 ))}
                 {overflow > 0 && (
                   <p className="pl-1 text-xs text-muted-foreground">

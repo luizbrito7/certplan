@@ -39,6 +39,7 @@ import { createCustomCertification } from "@/lib/actions/certifications"
 import type { Certification, Vendor } from "@/lib/types"
 import { VENDOR_LABELS } from "@/lib/types"
 import { VendorIcon } from "@/components/icons/vendor-icon"
+import { CertLogo } from "@/components/icons/cert-logo"
 import { toast } from "sonner"
 
 interface CertComboboxProps {
@@ -96,7 +97,7 @@ export function CertCombobox({ certifications, value, onChange }: CertComboboxPr
             <span className="flex items-center gap-1.5 truncate">
               {selected ? (
                 <>
-                  <VendorIcon vendor={selected.vendor} className="h-3.5 w-3.5 shrink-0" />
+                  <CertLogo cert={selected} className="h-4 w-4 shrink-0" />
                   {selected.name}{selected.code ? ` (${selected.code})` : ""}
                 </>
               ) : (
@@ -135,7 +136,6 @@ export function CertCombobox({ certifications, value, onChange }: CertComboboxPr
                         className="py-2.5"
                       >
                         <Check className={cn("mr-2 h-4 w-4 shrink-0", value === cert.id ? "opacity-100" : "opacity-0")} />
-                        <VendorIcon vendor={vendor} className="mr-1.5 h-3.5 w-3.5" />
                         <span className="flex-1">{cert.name}</span>
                         {cert.code && (
                           <span className="ml-4 text-xs text-muted-foreground tabular-nums">{cert.code}</span>
