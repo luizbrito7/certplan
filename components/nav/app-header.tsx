@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { CalendarDays, User, LogOut } from "lucide-react"
 import { Logo } from "./logo"
+import { ThemeToggle } from "./theme-toggle"
 
 async function signOut() {
   "use server"
@@ -44,48 +45,47 @@ export async function AppHeader() {
         <Logo href={user ? "/calendar" : "/"} />
 
         <nav className="flex items-center gap-1">
-          {user ? (
-            <>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/calendar">
-                  <CalendarDays className="h-4 w-4 mr-1.5" />
-                  Calendar
-                </Link>
-              </Button>
+          <ThemeToggle />
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="ml-1 rounded-full">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={profile?.avatar_url ?? undefined} />
-                      <AvatarFallback className="text-xs">{initials}</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <div className="px-2 py-1.5">
-                    <p className="text-sm font-medium">{profile?.display_name ?? profile?.username}</p>
-                    <p className="text-xs text-muted-foreground">@{profile?.username}</p>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/profile">
-                      <User className="h-4 w-4 mr-2" />
-                      My Profile
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <form action={signOut}>
-                      <button type="submit" className="flex w-full items-center text-destructive">
-                        <LogOut className="h-4 w-4 mr-2" />
-                        Sign out
-                      </button>
-                    </form>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="ml-1 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={profile?.avatar_url ?? undefined} />
+                    <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                <div className="px-2 py-1.5">
+                  <p className="text-sm font-medium">{profile?.display_name ?? profile?.username}</p>
+                  <p className="text-xs text-muted-foreground">@{profile?.username}</p>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/calendar">
+                    <CalendarDays className="h-4 w-4 mr-2" />
+                    Calendar
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">
+                    <User className="h-4 w-4 mr-2" />
+                    My Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <form action={signOut}>
+                    <button type="submit" className="flex w-full items-center text-destructive">
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign out
+                    </button>
+                  </form>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <>
               <Button variant="ghost" size="sm" asChild>
