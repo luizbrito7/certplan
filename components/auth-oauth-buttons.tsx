@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
@@ -18,6 +19,7 @@ interface OAuthButtonsProps {
 }
 
 export function OAuthButtons({ redirectTo = "/calendar" }: OAuthButtonsProps) {
+  const t = useTranslations("auth")
   const [loading, setLoading] = useState(false)
 
   async function handleGitHub() {
@@ -44,7 +46,7 @@ export function OAuthButtons({ redirectTo = "/calendar" }: OAuthButtonsProps) {
       ) : (
         <GithubIcon className="mr-2 h-4 w-4" />
       )}
-      Continue with GitHub
+      {t("continueWithGithub")}
     </Button>
   )
 }

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation"
+import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
@@ -17,6 +18,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function PublicProfilePage({ params }: Props) {
   const { username } = await params
   const supabase = await createClient()
+  const t = await getTranslations("publicProfile")
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -60,7 +62,7 @@ export default async function PublicProfilePage({ params }: Props) {
       {haveCerts.length > 0 && (
         <section className="space-y-3">
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-            Certifications
+            {t("certifications")}
           </h2>
           <div className="flex flex-wrap gap-2">
             {haveCerts.map(uc => <CertBadge key={uc.id} userCert={uc} />)}
@@ -74,7 +76,7 @@ export default async function PublicProfilePage({ params }: Props) {
           {haveCerts.length > 0 && <Separator />}
           <section className="space-y-3">
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-              Working towards
+              {t("workingTowards")}
             </h2>
             <div className="flex flex-wrap gap-2">
               {seekingCerts.map(uc => <CertBadge key={uc.id} userCert={uc} />)}
@@ -84,7 +86,7 @@ export default async function PublicProfilePage({ params }: Props) {
       )}
 
       {certs.length === 0 && (
-        <p className="text-muted-foreground text-sm">No certifications added yet.</p>
+        <p className="text-muted-foreground text-sm">{t("noCerts")}</p>
       )}
     </div>
   )

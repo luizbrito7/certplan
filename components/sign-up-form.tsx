@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import {
@@ -22,6 +23,8 @@ export function SignUpForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const t = useTranslations("auth")
+  const tCommon = useTranslations("common")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [repeatPassword, setRepeatPassword] = useState("")
@@ -36,7 +39,7 @@ export function SignUpForm({
     setError(null)
 
     if (password !== repeatPassword) {
-      setError("Passwords do not match")
+      setError(t("signUp.passwordMismatch"))
       setIsLoading(false)
       return
     }
@@ -52,7 +55,7 @@ export function SignUpForm({
       if (error) throw error
       router.push("/auth/sign-up-success")
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
+      setError(error instanceof Error ? error.message : t("errorOccurred"))
     } finally {
       setIsLoading(false)
     }
@@ -62,21 +65,21 @@ export function SignUpForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Create account</CardTitle>
-          <CardDescription>Start planning your certification journey</CardDescription>
+          <CardTitle className="text-2xl">{t("signUp.title")}</CardTitle>
+          <CardDescription>{t("signUp.description")}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <OAuthButtons />
 
           <div className="flex items-center gap-2">
             <Separator className="flex-1" />
-            <span className="text-xs text-muted-foreground">or</span>
+            <span className="text-xs text-muted-foreground">{tCommon("or")}</span>
             <Separator className="flex-1" />
           </div>
 
           <form onSubmit={handleSignUp} className="flex flex-col gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("email")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -87,7 +90,7 @@ export function SignUpForm({
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t("password")}</Label>
               <Input
                 id="password"
                 type="password"
@@ -97,7 +100,7 @@ export function SignUpForm({
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="repeat-password">Repeat password</Label>
+              <Label htmlFor="repeat-password">{t("signUp.repeatPassword")}</Label>
               <Input
                 id="repeat-password"
                 type="password"
@@ -108,14 +111,14 @@ export function SignUpForm({
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Creating account…" : "Create account"}
+              {isLoading ? t("signUp.loading") : t("signUp.button")}
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
+            {t("signUp.hasAccount")}{" "}
             <Link href="/auth/login" className="underline underline-offset-4 text-foreground">
-              Sign in
+              {t("signUp.signIn")}
             </Link>
           </p>
         </CardContent>

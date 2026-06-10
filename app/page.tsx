@@ -1,32 +1,35 @@
 import Link from "next/link"
 import Image from "next/image"
+import { getTranslations } from "next-intl/server"
 import { Button } from "@/components/ui/button"
 import { CalendarDays, UserCircle, Bell, ShieldCheck } from "lucide-react"
 
-const features = [
-  {
-    icon: CalendarDays,
-    title: "Visual Exam Calendar",
-    description: "Schedule your certification exams on an interactive monthly calendar. Click any day to plan a new exam.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Certification Catalog",
-    description: "Browse AWS, Azure, Cisco, Kubernetes, GCP and more. Can't find yours? Add a custom certification.",
-  },
-  {
-    icon: UserCircle,
-    title: "Public Profile",
-    description: "Showcase the certifications you have and the ones you're working towards. Share your profile with others.",
-  },
-  {
-    icon: Bell,
-    title: "Email Reminders",
-    description: "Get notified by email before your exam date so you never miss a scheduled certification.",
-  },
-]
+export default async function HomePage() {
+  const t = await getTranslations("landing")
 
-export default function HomePage() {
+  const features = [
+    {
+      icon: CalendarDays,
+      title: t("calendarTitle"),
+      description: t("calendarDescription"),
+    },
+    {
+      icon: ShieldCheck,
+      title: t("catalogTitle"),
+      description: t("catalogDescription"),
+    },
+    {
+      icon: UserCircle,
+      title: t("profileTitle"),
+      description: t("profileDescription"),
+    },
+    {
+      icon: Bell,
+      title: t("remindersTitle"),
+      description: t("remindersDescription"),
+    },
+  ]
+
   return (
     <div className="flex flex-col">
       {/* Hero */}
@@ -36,17 +39,17 @@ export default function HomePage() {
           <Image src="/logo-light.png" alt="certplan" width={72} height={72} className="hidden dark:block" />
         </div>
         <h1 className="text-5xl font-bold tracking-tight leading-tight">
-          Plan your certification<br />journey
+          {t("heroTitle")}
         </h1>
         <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto">
-          Schedule exams, track your certifications, and get reminders — all in one clean dashboard.
+          {t("heroSubtitle")}
         </p>
         <div className="mt-8 flex gap-3 justify-center">
           <Button size="lg" asChild>
-            <Link href="/auth/sign-up">Get started free</Link>
+            <Link href="/auth/sign-up">{t("getStartedFree")}</Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
-            <Link href="/auth/login">Sign in</Link>
+            <Link href="/auth/login">{t("signIn")}</Link>
           </Button>
         </div>
       </section>

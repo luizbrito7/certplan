@@ -1,0 +1,163 @@
+{
+  "common": {
+    "cancel": "Cancelar",
+    "or": "ou"
+  },
+  "nav": {
+    "calendar": "Calendário",
+    "myProfile": "Meu Perfil",
+    "signOut": "Sair",
+    "signIn": "Entrar",
+    "getStarted": "Começar",
+    "toggleTheme": "Alternar tema",
+    "language": "Idioma"
+  },
+  "auth": {
+    "email": "E-mail",
+    "password": "Senha",
+    "continueWithGithub": "Continuar com GitHub",
+    "errorOccurred": "Ocorreu um erro",
+    "signIn": {
+      "title": "Entrar",
+      "description": "Bem-vindo de volta ao certplan",
+      "button": "Entrar",
+      "loading": "Entrando…",
+      "noAccount": "Não tem uma conta?",
+      "signUp": "Cadastre-se",
+      "forgotPassword": "Esqueceu a senha?"
+    },
+    "signUp": {
+      "title": "Criar conta",
+      "description": "Comece a planejar sua jornada de certificações",
+      "button": "Criar conta",
+      "loading": "Criando conta…",
+      "hasAccount": "Já tem uma conta?",
+      "signIn": "Entrar",
+      "repeatPassword": "Repetir senha",
+      "passwordMismatch": "As senhas não coincidem"
+    },
+    "forgotPassword": {
+      "title": "Redefinir Senha",
+      "description": "Digite seu e-mail e enviaremos um link para redefinir sua senha",
+      "button": "Enviar e-mail de redefinição",
+      "loading": "Enviando...",
+      "hasAccount": "Já tem uma conta?",
+      "login": "Entrar",
+      "successTitle": "Verifique seu E-mail",
+      "successDescription": "Instruções de redefinição de senha enviadas",
+      "successText": "Se você se cadastrou com e-mail e senha, você receberá um e-mail de redefinição de senha."
+    },
+    "updatePassword": {
+      "title": "Redefinir Senha",
+      "description": "Digite sua nova senha abaixo.",
+      "newPassword": "Nova senha",
+      "newPasswordPlaceholder": "Nova senha",
+      "button": "Salvar nova senha",
+      "loading": "Salvando..."
+    }
+  },
+  "calendar": {
+    "title": "Meu Calendário",
+    "description": "Clique em qualquer dia para agendar um exame, ou clique em um evento para ver os detalhes.",
+    "today": "Hoje",
+    "newEvent": "Novo evento",
+    "at": "às",
+    "weekdays": {
+      "sun": "Dom",
+      "mon": "Seg",
+      "tue": "Ter",
+      "wed": "Qua",
+      "thu": "Qui",
+      "fri": "Sex",
+      "sat": "Sáb"
+    },
+    "more": "+{count} mais",
+    "status": {
+      "planned": "planejado",
+      "done": "concluído",
+      "canceled": "cancelado"
+    }
+  },
+  "eventDialog": {
+    "scheduleTitle": "Agendar Exame",
+    "viewTitle": "Detalhes do Exame",
+    "editTitle": "Editar Exame",
+    "certification": "Certificação",
+    "titleLabel": "Título",
+    "dateTime": "Data e Hora",
+    "notes": "Observações",
+    "notesOptional": "(opcional)",
+    "notesPlaceholder": "Materiais de estudo, local do exame, etc.",
+    "titlePlaceholder": "Título do exame",
+    "schedule": "Agendar",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "done": "Concluído",
+    "cancelExam": "Cancelar",
+    "toastCreated": "Exame agendado!",
+    "toastUpdated": "Exame atualizado",
+    "toastDone": "Marcado como concluído!",
+    "toastCanceled": "Exame cancelado",
+    "toastDeleted": "Exame removido",
+    "toastCreateError": "Falha ao criar exame",
+    "toastUpdateError": "Falha ao atualizar",
+    "toastStatusError": "Falha ao atualizar status"
+  },
+  "certCombobox": {
+    "selectPlaceholder": "Selecionar certificação…",
+    "searchPlaceholder": "Buscar certificações…",
+    "noResults": "Nenhuma certificação encontrada.",
+    "addCustom": "Adicionar certificação personalizada",
+    "customTitle": "Adicionar Certificação Personalizada",
+    "customNameLabel": "Nome",
+    "customNameRequired": "Nome *",
+    "customNamePlaceholder": "ex.: Red Hat RHCSA",
+    "customVendorLabel": "Fornecedor",
+    "customCodeLabel": "Código / ID do Exame",
+    "customCodeOptional": "(opcional)",
+    "customCodePlaceholder": "ex.: EX200",
+    "customAddButton": "Adicionar",
+    "toastAdded": "Certificação personalizada adicionada",
+    "toastError": "Falha ao criar certificação"
+  },
+  "profile": {
+    "editProfile": "Editar Perfil",
+    "displayName": "Nome de Exibição",
+    "username": "Nome de usuário",
+    "avatarUrl": "URL do Avatar",
+    "bio": "Bio",
+    "displayNamePlaceholder": "Seu nome",
+    "usernamePlaceholder": "nomedeusuario",
+    "avatarUrlPlaceholder": "https://…",
+    "bioPlaceholder": "Algumas palavras sobre você…",
+    "saveChanges": "Salvar alterações",
+    "toastUpdated": "Perfil atualizado",
+    "haveLabel": "Certificações que tenho",
+    "seekingLabel": "Certificações que busco",
+    "noneYet": "Nenhuma adicionada ainda.",
+    "add": "Adicionar",
+    "toastCertAdded": "Certificação adicionada",
+    "toastCertError": "Falha ao adicionar",
+    "removeCert": "Remover certificação"
+  },
+  "publicProfile": {
+    "certifications": "Certificações",
+    "workingTowards": "Em busca de",
+    "noCerts": "Nenhuma certificação adicionada ainda."
+  },
+  "landing": {
+    "heroTitle": "Planeje sua jornada de certificações",
+    "heroSubtitle": "Agende exames, acompanhe suas certificações e receba lembretes — tudo em um painel organizado.",
+    "getStartedFree": "Começar gratuitamente",
+    "signIn": "Entrar",
+    "calendarTitle": "Calendário de Exames",
+    "calendarDescription": "Agende seus exames de certificação em um calendário mensal interativo. Clique em qualquer dia para planejar um novo exame.",
+    "catalogTitle": "Catálogo de Certificações",
+    "catalogDescription": "Navegue por AWS, Azure, Cisco, Kubernetes, GCP e mais. Não encontrou a sua? Adicione uma certificação personalizada.",
+    "profileTitle": "Perfil Público",
+    "profileDescription": "Mostre as certificações que você tem e as que está buscando. Compartilhe seu perfil com outras pessoas.",
+    "remindersTitle": "Lembretes por E-mail",
+    "remindersDescription": "Receba notificações por e-mail antes da data do exame para nunca perder uma certificação agendada."
+  }
+}

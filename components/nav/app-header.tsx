@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -13,6 +14,7 @@ import {
 import { CalendarDays, User, LogOut } from "lucide-react"
 import { Logo } from "./logo"
 import { ThemeToggle } from "./theme-toggle"
+import { LocaleSwitcher } from "./locale-switcher"
 
 async function signOut() {
   "use server"
@@ -24,6 +26,7 @@ async function signOut() {
 export async function AppHeader() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const t = await getTranslations("nav")
 
   let profile = null
   if (user) {
@@ -45,6 +48,7 @@ export async function AppHeader() {
         <Logo href={user ? "/calendar" : "/"} />
 
         <nav className="flex items-center gap-1">
+          <LocaleSwitcher />
           <ThemeToggle />
 
           {user ? (
@@ -66,13 +70,13 @@ export async function AppHeader() {
                 <DropdownMenuItem asChild>
                   <Link href="/calendar">
                     <CalendarDays className="h-4 w-4 mr-2" />
-                    Calendar
+                    {t("calendar")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/profile">
                     <User className="h-4 w-4 mr-2" />
-                    My Profile
+                    {t("myProfile")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -80,7 +84,7 @@ export async function AppHeader() {
                   <form action={signOut}>
                     <button type="submit" className="flex w-full items-center text-destructive">
                       <LogOut className="h-4 w-4 mr-2" />
-                      Sign out
+                      {t("signOut")}
                     </button>
                   </form>
                 </DropdownMenuItem>
@@ -89,10 +93,10 @@ export async function AppHeader() {
           ) : (
             <>
               <Button variant="ghost" size="sm" asChild>
-                <Link href="/auth/login">Sign in</Link>
+                <Link href="/auth/login">{t("signIn")}</Link>
               </Button>
               <Button size="sm" asChild>
-                <Link href="/auth/sign-up">Get started</Link>
+                <Link href="/auth/sign-up">{t("getStarted")}</Link>
               </Button>
             </>
           )}

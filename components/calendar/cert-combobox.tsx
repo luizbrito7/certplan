@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Check, ChevronsUpDown, PlusCircle, Loader2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -46,6 +47,8 @@ interface CertComboboxProps {
 }
 
 export function CertCombobox({ certifications, value, onChange }: CertComboboxProps) {
+  const t = useTranslations("certCombobox")
+  const tCommon = useTranslations("common")
   const [open, setOpen] = useState(false)
   const [customOpen, setCustomOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -66,7 +69,7 @@ export function CertCombobox({ certifications, value, onChange }: CertComboboxPr
     })
     setLoading(false)
     if (error || !data) {
-      toast.error(error ?? "Failed to create certification")
+      toast.error(error ?? t("toastError"))
       return
     }
     setCerts(prev => [...prev, data])
@@ -76,7 +79,7 @@ export function CertCombobox({ certifications, value, onChange }: CertComboboxPr
     setCustomName("")
     setCustomCode("")
     setCustomVendor("other")
-    toast.success("Custom certification added")
+    toast.success(t("toastAdded"))
   }
 
   return (
@@ -92,16 +95,16 @@ export function CertCombobox({ certifications, value, onChange }: CertComboboxPr
             <span className="truncate">
               {selected
                 ? `${selected.name}${selected.code ? ` (${selected.code})` : ""}`
-                : "Select certification…"}
+                : t("selectPlaceholder")}
             </span>
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[460px] p-0" align="start">
           <Command>
-            <CommandInput placeholder="Search certifications…" />
+            <CommandInput placeholder={t("searchPlaceholder")} />
             <CommandList className="max-h-[320px]">
-              <CommandEmpty>No certification found.</CommandEmpty>
+              <CommandEmpty>{t("noResults")}</CommandEmpty>
               {(["aws", "azure", "cisco", "kubernetes", "gcp", "other"] as Vendor[]).map(vendor => {
                 const group = certs.filter(c => c.vendor === vendor)
                 if (!group.length) return null
@@ -134,7 +137,7 @@ export function CertCombobox({ certifications, value, onChange }: CertComboboxPr
                   className="text-primary"
                 >
                   <PlusCircle className="mr-2 h-4 w-4" />
-                  Add custom certification
+                  {t("addCustom")}
                 </CommandItem>
               </CommandGroup>
             </CommandList>
@@ -145,19 +148,19 @@ export function CertCombobox({ certifications, value, onChange }: CertComboboxPr
       <Dialog open={customOpen} onOpenChange={setCustomOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Add Custom Certification</DialogTitle>
+            <DialogTitle>{t("customTitle")}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-1.5">
-              <Label>Name *</Label>
+              <Label>{t("customNameRequired")}</Label>
               <Input
-                placeholder="e.g. Red Hat RHCSA"
+                placeholder={t("customNamePlaceholder")}
                 value={customName}
                 onChange={e => setCustomName(e.target.value)}
               />
             </div>
             <div className="space-y-1.5">
-              <Label>Vendor</Label>
+              <Label>{t("customVendorLabel")}</Label>
               <Select value={customVendor} onValueChange={v => setCustomVendor(v as Vendor)}>
                 <SelectTrigger>
                   <SelectValue />
@@ -170,19 +173,19 @@ export function CertCombobox({ certifications, value, onChange }: CertComboboxPr
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label>Code / Exam ID <span className="text-muted-foreground">(optional)</span></Label>
+              <Label>{t("customCodeLabel")} <span className="text-muted-foreground">{t("customCodeOptional")}</span></Label>
               <Input
-                placeholder="e.g. EX200"
+                placeholder={t("customCodePlaceholder")}
                 value={customCode}
                 onChange={e => setCustomCode(e.target.value)}
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setCustomOpen(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setCustomOpen(false)}>{tCommon("cancel")}</Button>
             <Button onClick={handleCreateCustom} disabled={!customName.trim() || loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Add
+              {t("customAddButton")}
             </Button>
           </DialogFooter>
         </DialogContent>

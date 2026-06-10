@@ -1,0 +1,163 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "or": "or"
+  },
+  "nav": {
+    "calendar": "Calendar",
+    "myProfile": "My Profile",
+    "signOut": "Sign out",
+    "signIn": "Sign in",
+    "getStarted": "Get started",
+    "toggleTheme": "Toggle theme",
+    "language": "Language"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "continueWithGithub": "Continue with GitHub",
+    "errorOccurred": "An error occurred",
+    "signIn": {
+      "title": "Sign in",
+      "description": "Welcome back to certplan",
+      "button": "Sign in",
+      "loading": "Signing in…",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "forgotPassword": "Forgot password?"
+    },
+    "signUp": {
+      "title": "Create account",
+      "description": "Start planning your certification journey",
+      "button": "Create account",
+      "loading": "Creating account…",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "repeatPassword": "Repeat password",
+      "passwordMismatch": "Passwords do not match"
+    },
+    "forgotPassword": {
+      "title": "Reset Your Password",
+      "description": "Type in your email and we'll send you a link to reset your password",
+      "button": "Send reset email",
+      "loading": "Sending...",
+      "hasAccount": "Already have an account?",
+      "login": "Login",
+      "successTitle": "Check Your Email",
+      "successDescription": "Password reset instructions sent",
+      "successText": "If you registered using your email and password, you will receive a password reset email."
+    },
+    "updatePassword": {
+      "title": "Reset Your Password",
+      "description": "Please enter your new password below.",
+      "newPassword": "New password",
+      "newPasswordPlaceholder": "New password",
+      "button": "Save new password",
+      "loading": "Saving..."
+    }
+  },
+  "calendar": {
+    "title": "My Calendar",
+    "description": "Click any day to schedule an exam, or click an event to view details.",
+    "today": "Today",
+    "newEvent": "New event",
+    "at": "at",
+    "weekdays": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "more": "+{count} more",
+    "status": {
+      "planned": "planned",
+      "done": "done",
+      "canceled": "canceled"
+    }
+  },
+  "eventDialog": {
+    "scheduleTitle": "Schedule Exam",
+    "viewTitle": "Exam Details",
+    "editTitle": "Edit Exam",
+    "certification": "Certification",
+    "titleLabel": "Title",
+    "dateTime": "Date & Time",
+    "notes": "Notes",
+    "notesOptional": "(optional)",
+    "notesPlaceholder": "Study materials, exam center, etc.",
+    "titlePlaceholder": "Exam title",
+    "schedule": "Schedule",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "done": "Done",
+    "cancelExam": "Cancel",
+    "toastCreated": "Exam scheduled!",
+    "toastUpdated": "Exam updated",
+    "toastDone": "Marked as done!",
+    "toastCanceled": "Exam canceled",
+    "toastDeleted": "Exam removed",
+    "toastCreateError": "Failed to create exam",
+    "toastUpdateError": "Failed to update",
+    "toastStatusError": "Failed to update status"
+  },
+  "certCombobox": {
+    "selectPlaceholder": "Select certification…",
+    "searchPlaceholder": "Search certifications…",
+    "noResults": "No certification found.",
+    "addCustom": "Add custom certification",
+    "customTitle": "Add Custom Certification",
+    "customNameLabel": "Name",
+    "customNameRequired": "Name *",
+    "customNamePlaceholder": "e.g. Red Hat RHCSA",
+    "customVendorLabel": "Vendor",
+    "customCodeLabel": "Code / Exam ID",
+    "customCodeOptional": "(optional)",
+    "customCodePlaceholder": "e.g. EX200",
+    "customAddButton": "Add",
+    "toastAdded": "Custom certification added",
+    "toastError": "Failed to create certification"
+  },
+  "profile": {
+    "editProfile": "Edit Profile",
+    "displayName": "Display Name",
+    "username": "Username",
+    "avatarUrl": "Avatar URL",
+    "bio": "Bio",
+    "displayNamePlaceholder": "Your name",
+    "usernamePlaceholder": "username",
+    "avatarUrlPlaceholder": "https://…",
+    "bioPlaceholder": "A few words about yourself…",
+    "saveChanges": "Save changes",
+    "toastUpdated": "Profile updated",
+    "haveLabel": "Certifications I have",
+    "seekingLabel": "Certifications I'm seeking",
+    "noneYet": "None added yet.",
+    "add": "Add",
+    "toastCertAdded": "Certification added",
+    "toastCertError": "Failed to add",
+    "removeCert": "Remove certification"
+  },
+  "publicProfile": {
+    "certifications": "Certifications",
+    "workingTowards": "Working towards",
+    "noCerts": "No certifications added yet."
+  },
+  "landing": {
+    "heroTitle": "Plan your certification journey",
+    "heroSubtitle": "Schedule exams, track your certifications, and get reminders — all in one clean dashboard.",
+    "getStartedFree": "Get started free",
+    "signIn": "Sign in",
+    "calendarTitle": "Visual Exam Calendar",
+    "calendarDescription": "Schedule your certification exams on an interactive monthly calendar. Click any day to plan a new exam.",
+    "catalogTitle": "Certification Catalog",
+    "catalogDescription": "Browse AWS, Azure, Cisco, Kubernetes, GCP and more. Can't find yours? Add a custom certification.",
+    "profileTitle": "Public Profile",
+    "profileDescription": "Showcase the certifications you have and the ones you're working towards. Share your profile with others.",
+    "remindersTitle": "Email Reminders",
+    "remindersDescription": "Get notified by email before your exam date so you never miss a scheduled certification."
+  }
+}

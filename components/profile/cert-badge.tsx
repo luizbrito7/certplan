@@ -5,10 +5,11 @@ import type { UserCertification } from "@/lib/types"
 interface CertBadgeProps {
   userCert: UserCertification
   onRemove?: (id: string) => void
+  removeLabel?: string
   className?: string
 }
 
-export function CertBadge({ userCert, onRemove, className }: CertBadgeProps) {
+export function CertBadge({ userCert, onRemove, removeLabel = "Remove", className }: CertBadgeProps) {
   const cert = userCert.certification
   if (!cert) return null
 
@@ -33,7 +34,7 @@ export function CertBadge({ userCert, onRemove, className }: CertBadgeProps) {
           type="button"
           onClick={() => onRemove(userCert.id)}
           className="ml-1 rounded-full opacity-50 hover:opacity-100 transition-opacity text-xs leading-none"
-          aria-label="Remove certification"
+          aria-label={removeLabel}
         >
           ✕
         </button>

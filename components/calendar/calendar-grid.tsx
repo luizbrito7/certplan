@@ -14,13 +14,14 @@ import {
   isToday,
   isSameDay,
 } from "date-fns"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 import type { Certification, ExamPlan } from "@/lib/types"
 import { CalendarHeader } from "./calendar-header"
 import { EventChip } from "./event-chip"
 import { EventDialog, type DialogState } from "./event-dialog"
 
-const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+const WEEKDAY_KEYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const
 
 interface CalendarGridProps {
   initialPlans: ExamPlan[]
@@ -28,6 +29,7 @@ interface CalendarGridProps {
 }
 
 export function CalendarGrid({ initialPlans, certifications }: CalendarGridProps) {
+  const t = useTranslations("calendar")
   const [currentDate, setCurrentDate] = useState(new Date())
   const [plans, setPlans] = useState<ExamPlan[]>(initialPlans)
   const [dialog, setDialog] = useState<DialogState>({ open: false, mode: "create" })
@@ -72,9 +74,9 @@ export function CalendarGrid({ initialPlans, certifications }: CalendarGridProps
 
       {/* Day-of-week headers */}
       <div className="grid grid-cols-7 border-b bg-muted/30">
-        {WEEKDAYS.map(day => (
-          <div key={day} className="py-2 text-center text-xs font-medium text-muted-foreground">
-            {day}
+        {WEEKDAY_KEYS.map(key => (
+          <div key={key} className="py-2 text-center text-xs font-medium text-muted-foreground">
+            {t(`weekdays.${key}`)}
           </div>
         ))}
       </div>
@@ -112,7 +114,9 @@ export function CalendarGrid({ initialPlans, certifications }: CalendarGridProps
                   <EventChip key={plan.id} plan={plan} onClick={e => openView(plan, e)} />
                 ))}
                 {overflow > 0 && (
-                  <p className="pl-1 text-xs text-muted-foreground">+{overflow} more</p>
+                  <p className="pl-1 text-xs text-muted-foreground">
+                    {t("more", { count: overflow })}
+                  </p>
                 )}
               </div>
             </div>

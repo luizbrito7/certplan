@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
@@ -12,6 +13,8 @@ export default async function ProfilePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/auth/login")
+
+  const t = await getTranslations("profile")
 
   const [profileRes, certsRes, userCertsRes] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),
@@ -52,7 +55,7 @@ export default async function ProfilePage() {
 
       {/* Edit profile form */}
       <section>
-        <h2 className="text-base font-semibold mb-4">Edit Profile</h2>
+        <h2 className="text-base font-semibold mb-4">{t("editProfile")}</h2>
         <ProfileForm profile={profile} />
       </section>
 
@@ -64,7 +67,7 @@ export default async function ProfilePage() {
           status="have"
           userCerts={haveCerts}
           certifications={certifications}
-          label="Certifications I have"
+          label={t("haveLabel")}
         />
       </section>
 
@@ -76,7 +79,7 @@ export default async function ProfilePage() {
           status="seeking"
           userCerts={seekingCerts}
           certifications={certifications}
-          label="Certifications I'm seeking"
+          label={t("seekingLabel")}
         />
       </section>
     </div>

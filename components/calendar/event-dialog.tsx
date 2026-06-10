@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
+import { useLocale, useTranslations } from "next-intl"
 import { Loader2, Trash2, CheckCircle2, XCircle } from "lucide-react"
 import {
   Dialog,
@@ -20,6 +21,7 @@ import { createExamPlan, updateExamPlan, deleteExamPlan } from "@/lib/actions/ex
 import type { Certification, ExamPlan } from "@/lib/types"
 import { VENDOR_COLORS } from "@/lib/types"
 import { toast } from "sonner"
+import { getDateFnsLocale } from "@/lib/date"
 
 export interface DialogState {
   open: boolean
@@ -36,6 +38,11 @@ interface EventDialogProps {
 }
 
 export function EventDialog({ state, certifications, onClose, onSuccess }: EventDialogProps) {
+  const t = useTranslations("eventDialog")
+  const tc = useTranslations("calendar")
+  const locale = useLocale()
+  const dateLocale = getDateFnsLocale(locale)
+
   const { open, mode, date, plan } = state
 
   const [selectedCert, setSelectedCert] = useState<Certification | null>(null)
@@ -80,8 +87,8 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
       notes: notes || undefined,
     })
     setLoading(false)
-    if (error || !data) { toast.error(error ?? "Failed to create exam"); return }
-    toast.success("Exam scheduled!")
+    if (error || !data) { toast.error(error ?? t("toastCreateError")); return }
+    toast.success(t("toastCreated"))
     onSuccess({ ...data, certification: selectedCert }, "create")
   }
 
@@ -94,8 +101,8 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
       notes: notes || undefined,
     })
     setLoading(false)
-    if (error || !data) { toast.error(error ?? "Failed to update"); return }
-    toast.success("Exam updated")
+    if (error || !data) { toast.error(error ?? t("toastUpdateError")); return }
+    toast.success(t("toastUpdated"))
     onSuccess({ ...data, certification: selectedCert ?? plan.certification }, "update")
   }
 
@@ -104,8 +111,8 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
     setLoading(true)
     const { data, error } = await updateExamPlan(plan.id, { status })
     setLoading(false)
-    if (error || !data) { toast.error(error ?? "Failed to update status"); return }
-    toast.success(status === "done" ? "Marked as done!" : "Exam canceled")
+    if (error || !data) { toast.error(error ?? t("toastStatusError")); return }
+    toast.success(status === "done" ? t("toastDone") : t("toastCanceled"))
     onSuccess({ ...data, certification: plan.certification }, "update")
   }
 
@@ -115,19 +122,26 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
     const { error } = await deleteExamPlan(plan.id)
     setLoading(false)
     if (error) { toast.error(error); return }
-    toast.success("Exam removed")
+    toast.success(t("toastDeleted"))
     onSuccess(plan, "delete")
   }
 
   const isViewMode = mode === "view" && !editing
   const vendor = selectedCert?.vendor ?? plan?.certification?.vendor
 
+  function formatDateTime(isoString: string) {
+    const d = new Date(isoString)
+    const datePart = format(d, "PPP", { locale: dateLocale })
+    const timePart = format(d, "HH:mm")
+    return `${datePart} ${tc("at")} ${timePart}`
+  }
+
   return (
     <Dialog open={open} onOpenChange={v => !v && onClose()}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            {mode === "create" ? "Schedule Exam" : isViewMode ? "Exam Details" : "Edit Exam"}
+            {mode === "create" ? t("scheduleTitle") : isViewMode ? t("viewTitle") : t("editTitle")}
             {vendor && (
               <Badge className={VENDOR_COLORS[vendor]} variant="secondary">
                 {selectedCert?.vendor?.toUpperCase() ?? plan?.certification?.vendor?.toUpperCase()}
@@ -139,7 +153,7 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
         <div className="space-y-4">
           {/* Certification */}
           <div className="space-y-1.5">
-            <Label>Certification</Label>
+            <Label>{t("certification")}</Label>
             {isViewMode ? (
               <p className="text-sm font-medium">
                 {plan?.certification?.name ?? plan?.title}
@@ -158,20 +172,20 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
 
           {/* Title */}
           <div className="space-y-1.5">
-            <Label>Title</Label>
+            <Label>{t("titleLabel")}</Label>
             {isViewMode ? (
               <p className="text-sm">{plan?.title}</p>
             ) : (
-              <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="Exam title" />
+              <Input value={title} onChange={e => setTitle(e.target.value)} placeholder={t("titlePlaceholder")} />
             )}
           </div>
 
           {/* Date & Time */}
           <div className="space-y-1.5">
-            <Label>Date & Time</Label>
+            <Label>{t("dateTime")}</Label>
             {isViewMode ? (
               <p className="text-sm">
-                {plan && format(new Date(plan.scheduled_at), "PPP 'at' HH:mm")}
+                {plan && formatDateTime(plan.scheduled_at)}
               </p>
             ) : (
               <Input
@@ -184,14 +198,14 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
 
           {/* Notes */}
           <div className="space-y-1.5">
-            <Label>Notes <span className="text-muted-foreground">(optional)</span></Label>
+            <Label>{t("notes")} <span className="text-muted-foreground">{t("notesOptional")}</span></Label>
             {isViewMode ? (
               <p className="text-sm text-muted-foreground">{plan?.notes || "—"}</p>
             ) : (
               <Textarea
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
-                placeholder="Study materials, exam center, etc."
+                placeholder={t("notesPlaceholder")}
                 rows={3}
               />
             )}
@@ -201,7 +215,7 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
           {isViewMode && plan && (
             <div className="flex items-center gap-2">
               <Badge variant={plan.status === "done" ? "default" : plan.status === "canceled" ? "destructive" : "outline"}>
-                {plan.status}
+                {tc(`status.${plan.status}`)}
               </Badge>
             </div>
           )}
@@ -217,32 +231,32 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
                 {plan?.status === "planned" && (
                   <>
                     <Button variant="outline" size="sm" onClick={() => handleStatusChange("done")} disabled={loading}>
-                      <CheckCircle2 className="h-4 w-4 mr-1.5" />Done
+                      <CheckCircle2 className="h-4 w-4 mr-1.5" />{t("done")}
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => handleStatusChange("canceled")} disabled={loading}>
-                      <XCircle className="h-4 w-4 mr-1.5" />Cancel
+                      <XCircle className="h-4 w-4 mr-1.5" />{t("cancelExam")}
                     </Button>
                   </>
                 )}
               </div>
               <Button onClick={() => setEditing(true)} variant="default" size="sm">
-                Edit
+                {t("edit")}
               </Button>
             </>
           ) : mode === "create" ? (
             <>
-              <Button variant="outline" onClick={onClose}>Cancel</Button>
+              <Button variant="outline" onClick={onClose}>{t("cancel")}</Button>
               <Button onClick={handleCreate} disabled={!selectedCert || !title || !scheduledAt || loading}>
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Schedule
+                {t("schedule")}
               </Button>
             </>
           ) : (
             <>
-              <Button variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setEditing(false)}>{t("cancel")}</Button>
               <Button onClick={handleUpdate} disabled={!title || !scheduledAt || loading}>
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Save
+                {t("save")}
               </Button>
             </>
           )}

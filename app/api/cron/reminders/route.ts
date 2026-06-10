@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
 import { createServiceClient } from "@/lib/supabase/service"
-import { ReminderEmailHtml } from "@/lib/email/reminder-template"
+import { ReminderEmailHtml, getEmailSubject } from "@/lib/email/reminder-template"
 import { format, addHours } from "date-fns"
+import { ptBR } from "date-fns/locale"
+
+type Locale = "pt-BR" | "en"
 
 export async function GET(request: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY)
@@ -18,7 +21,7 @@ export async function GET(request: NextRequest) {
   // Find plans due within next 24h that haven't been reminded
   const { data: plans, error } = await supabase
     .from("exam_plans")
-    .select("*, certification:certifications(name), profile:profiles!exam_plans_user_id_fkey(display_name, username)")
+    .select("*, certification:certifications(name), profile:profiles!exam_plans_user_id_fkey(display_name, username, locale)")
     .eq("status", "planned")
     .eq("reminder_sent", false)
     .gte("scheduled_at", now.toISOString())
@@ -32,10 +35,16 @@ export async function GET(request: NextRequest) {
   const results: { id: string; sent: boolean }[] = []
 
   for (const plan of plans ?? []) {
-    const profile = plan.profile as { display_name?: string; username?: string } | null
+    const profile = plan.profile as { display_name?: string; username?: string; locale?: string } | null
+    const locale: Locale = (profile?.locale === "en" ? "en" : "pt-BR")
     const certName = (plan.certification as { name?: string } | null)?.name ?? plan.title
     const userName = profile?.display_name ?? profile?.username ?? "there"
-    const examDate = format(new Date(plan.scheduled_at), "PPP 'at' HH:mm")
+
+    const dateFnsLocale = locale === "pt-BR" ? ptBR : undefined
+    const examDate = format(new Date(plan.scheduled_at), "PPP 'às' HH:mm", {
+      locale: dateFnsLocale,
+    })
+
     const msUntil = new Date(plan.scheduled_at).getTime() - now.getTime()
     const daysUntil = Math.max(1, Math.ceil(msUntil / 86_400_000))
 
@@ -44,11 +53,13 @@ export async function GET(request: NextRequest) {
     const email = userRow?.user?.email
     if (!email) continue
 
+    const subject = getEmailSubject({ certName, daysUntil, locale })
+
     const { error: sendError } = await resend.emails.send({
       from: "certplan <noreply@certplan.app>",
       to: email,
-      subject: `Reminder: ${certName} exam ${daysUntil === 1 ? "tomorrow" : `in ${daysUntil} days`}`,
-      html: ReminderEmailHtml({ userName, certName, examDate, daysUntil }),
+      subject,
+      html: ReminderEmailHtml({ userName, certName, examDate, daysUntil, locale }),
     })
 
     if (!sendError) {

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { PlusCircle, Loader2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { CertBadge } from "./cert-badge"
 import { CertCombobox } from "@/components/calendar/cert-combobox"
@@ -17,6 +18,8 @@ interface CertManagerProps {
 }
 
 export function CertManager({ status, userCerts: initial, certifications, label }: CertManagerProps) {
+  const t = useTranslations("profile")
+  const tCommon = useTranslations("common")
   const [certs, setCerts] = useState<UserCertification[]>(initial)
   const [adding, setAdding] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -30,11 +33,11 @@ export function CertManager({ status, userCerts: initial, certifications, label 
       status,
     })
     setLoading(false)
-    if (error || !data) { toast.error(error ?? "Failed to add"); return }
+    if (error || !data) { toast.error(error ?? t("toastCertError")); return }
     setCerts(prev => [...prev, { ...data, certification: selectedCert }])
     setAdding(false)
     setSelectedCert(null)
-    toast.success("Certification added")
+    toast.success(t("toastCertAdded"))
   }
 
   async function handleRemove(id: string) {
@@ -51,10 +54,10 @@ export function CertManager({ status, userCerts: initial, certifications, label 
       <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{label}</h3>
       <div className="flex flex-wrap gap-2">
         {certs.map(uc => (
-          <CertBadge key={uc.id} userCert={uc} onRemove={handleRemove} />
+          <CertBadge key={uc.id} userCert={uc} onRemove={handleRemove} removeLabel={t("removeCert")} />
         ))}
         {certs.length === 0 && !adding && (
-          <p className="text-sm text-muted-foreground">None added yet.</p>
+          <p className="text-sm text-muted-foreground">{t("noneYet")}</p>
         )}
       </div>
 
@@ -68,16 +71,16 @@ export function CertManager({ status, userCerts: initial, certifications, label 
             />
           </div>
           <Button size="sm" onClick={handleAdd} disabled={!selectedCert || loading}>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add"}
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : t("add")}
           </Button>
           <Button size="sm" variant="ghost" onClick={() => { setAdding(false); setSelectedCert(null) }}>
-            Cancel
+            {tCommon("cancel")}
           </Button>
         </div>
       ) : (
         <Button variant="outline" size="sm" onClick={() => setAdding(true)}>
           <PlusCircle className="h-4 w-4 mr-1.5" />
-          Add
+          {t("add")}
         </Button>
       )}
     </div>

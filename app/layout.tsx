@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import { Lexend } from "next/font/google"
 import { ThemeProvider } from "next-themes"
+import { NextIntlClientProvider } from "next-intl"
+import { getLocale, getMessages } from "next-intl/server"
 import { Toaster } from "@/components/ui/sonner"
 import { AppHeader } from "@/components/nav/app-header"
 import "./globals.css"
@@ -21,24 +23,29 @@ const lexend = Lexend({
   subsets: ["latin"],
 })
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const locale = await getLocale()
+  const messages = await getMessages()
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={`${lexend.variable} font-[family-name:var(--font-lexend)] antialiased flex flex-col min-h-svh`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AppHeader />
-          <main className="flex flex-col flex-1">{children}</main>
-          <Toaster richColors position="top-right" />
-        </ThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <AppHeader />
+            <main className="flex flex-col flex-1">{children}</main>
+            <Toaster richColors position="top-right" />
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   )
