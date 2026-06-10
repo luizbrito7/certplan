@@ -63,6 +63,15 @@ export const VENDOR_COLORS: Record<Vendor, string> = {
   other:      'bg-slate-100 text-slate-700 dark:bg-slate-700/60 dark:text-slate-300',
 }
 
+export const VENDOR_HEX: Record<Vendor, string> = {
+  aws:        '#FF9900',
+  azure:      '#0078D4',
+  cisco:      '#1BA0D7',
+  kubernetes: '#326CE5',
+  gcp:        '#4285F4',
+  other:      'currentColor',
+}
+
 export const VENDOR_CHIP_COLORS: Record<Vendor, string> = {
   aws:        'bg-amber-200/70 text-amber-900 dark:bg-amber-800/60 dark:text-amber-200',
   azure:      'bg-blue-200/70 text-blue-900 dark:bg-blue-800/60 dark:text-blue-200',

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import { useLocale, useTranslations } from "next-intl"
 import { Loader2, Trash2, CheckCircle2, XCircle } from "lucide-react"
+import { cn } from "@/lib/utils"
 import {
   Dialog,
   DialogContent,
@@ -16,10 +17,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
+import { VendorIcon } from "@/components/icons/vendor-icon"
 import { CertCombobox } from "./cert-combobox"
 import { createExamPlan, updateExamPlan, deleteExamPlan } from "@/lib/actions/exam-plans"
 import type { Certification, ExamPlan } from "@/lib/types"
-import { VENDOR_COLORS } from "@/lib/types"
+import { VENDOR_COLORS, VENDOR_LABELS } from "@/lib/types"
 import { toast } from "sonner"
 import { getDateFnsLocale } from "@/lib/date"
 
@@ -143,8 +145,9 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
           <DialogTitle className="flex items-center gap-2">
             {mode === "create" ? t("scheduleTitle") : isViewMode ? t("viewTitle") : t("editTitle")}
             {vendor && (
-              <Badge className={VENDOR_COLORS[vendor]} variant="secondary">
-                {selectedCert?.vendor?.toUpperCase() ?? plan?.certification?.vendor?.toUpperCase()}
+              <Badge className={cn("flex items-center gap-1.5", VENDOR_COLORS[vendor])} variant="secondary">
+                <VendorIcon vendor={vendor} className="h-3.5 w-3.5" />
+                {VENDOR_LABELS[vendor]}
               </Badge>
             )}
           </DialogTitle>
@@ -200,7 +203,7 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
           <div className="space-y-1.5">
             <Label>{t("notes")} <span className="text-muted-foreground">{t("notesOptional")}</span></Label>
             {isViewMode ? (
-              <p className="text-sm text-muted-foreground">{plan?.notes || "—"}</p>
+              <p className="text-sm text-muted-foreground">{plan?.notes || "-"}</p>
             ) : (
               <Textarea
                 value={notes}

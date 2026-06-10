@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import { VENDOR_COLORS, VENDOR_LABELS } from "@/lib/types"
 import type { UserCertification } from "@/lib/types"
+import { VendorIcon } from "@/components/icons/vendor-icon"
 
 interface CertBadgeProps {
   userCert: UserCertification
@@ -23,6 +24,7 @@ export function CertBadge({ userCert, onRemove, removeLabel = "Remove", classNam
         className,
       )}
     >
+      <VendorIcon vendor={cert.vendor} className="h-3.5 w-3.5 shrink-0" />
       <span className="text-[10px] uppercase tracking-wider opacity-70">
         {VENDOR_LABELS[cert.vendor]}
       </span>
