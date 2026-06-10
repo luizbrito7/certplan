@@ -29,6 +29,8 @@ const CERT_BADGE_MAP: Record<string, string> = {
   "cisco-ccna":   "/badges/cisco/cisco-ccna.png",
   "cisco-encor":  "/badges/cisco/cisco-encor.png",
   // Kubernetes / CNCF
+  "cncf-kcna":    "/badges/kubernetes/cncf-kcna.png",
+  "cncf-kcsa":    "/badges/kubernetes/cncf-kcsa.png",
   "cncf-cka":     "/badges/kubernetes/cncf-cka.png",
   "cncf-ckad":    "/badges/kubernetes/cncf-ckad.png",
   "cncf-cks":     "/badges/kubernetes/cncf-cks.png",

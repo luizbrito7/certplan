@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server"
 import { CalendarGrid } from "@/components/calendar/calendar-grid"
 import type { Certification, ExamPlan } from "@/lib/types"
 
-export const metadata = { title: "Calendar — certplan" }
+export const metadata = { title: "Certplan - Calendar" }
 
 export default async function CalendarPage() {
   const supabase = await createClient()

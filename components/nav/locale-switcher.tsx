@@ -14,10 +14,10 @@ import { setLocale } from "@/lib/actions/locale"
 import type { Locale } from "@/i18n/locales"
 import { useRouter } from "next/navigation"
 
-const LOCALE_LABELS: Record<Locale, string> = {
-  "pt-BR": "PT",
-  en: "EN",
-}
+const LOCALE_OPTIONS: { locale: Locale; label: string; flag: string }[] = [
+  { locale: "pt-BR", label: "PT", flag: "🇧🇷" },
+  { locale: "en",    label: "EN", flag: "🇺🇸" },
+]
 
 export function LocaleSwitcher() {
   const locale = useLocale() as Locale
@@ -31,27 +31,30 @@ export function LocaleSwitcher() {
     })
   }
 
+  const current = LOCALE_OPTIONS.find(o => o.locale === locale)
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           size="sm"
-          className="gap-1.5 px-2 font-medium text-xs"
+          className="gap-1.5 px-2 font-medium text-xs cursor-pointer"
           disabled={isPending}
           aria-label="Switch language"
         >
           <Languages className="h-4 w-4" />
-          {LOCALE_LABELS[locale]}
+          {current?.label}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[90px]">
-        {(Object.entries(LOCALE_LABELS) as [Locale, string][]).map(([l, label]) => (
+      <DropdownMenuContent align="end" className="min-w-[100px]">
+        {LOCALE_OPTIONS.map(({ locale: l, label, flag }) => (
           <DropdownMenuItem
             key={l}
             onClick={() => handleSelect(l)}
-            className={locale === l ? "font-semibold" : ""}
+            className={`gap-2 cursor-pointer${locale === l ? " font-semibold" : ""}`}
           >
+            <span>{flag}</span>
             {label}
           </DropdownMenuItem>
         ))}

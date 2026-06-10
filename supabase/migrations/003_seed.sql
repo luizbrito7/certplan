@@ -23,6 +23,8 @@ INSERT INTO public.certifications (name, vendor, code, slug, is_custom) VALUES
   ('CCNA',                                      'cisco', '200-301', 'cisco-ccna',    false),
   ('CCNP Enterprise Core',                      'cisco', '350-401', 'cisco-encor',   false),
   -- Kubernetes / CNCF
+  ('Kubernetes and Cloud Native Associate',     'kubernetes', 'KCNA', 'cncf-kcna', false),
+  ('Kubernetes and Cloud Native Security Associate', 'kubernetes', 'KCSA', 'cncf-kcsa', false),
   ('Certified Kubernetes Administrator',        'kubernetes', 'CKA',  'cncf-cka',  false),
   ('Certified Kubernetes Application Developer','kubernetes', 'CKAD', 'cncf-ckad', false),
   ('Certified Kubernetes Security Specialist',  'kubernetes', 'CKS',  'cncf-cks',  false),
