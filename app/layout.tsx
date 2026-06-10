@@ -11,7 +11,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "CertPlan — Plan Your Certification Journey",
+  title: "certplan — Plan Your Certification Journey",
   description: "Schedule and track your IT certification exams in one place.",
 }
 

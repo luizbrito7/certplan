@@ -32,8 +32,8 @@ export default function HomePage() {
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-4 py-20 text-center">
         <div className="flex justify-center mb-6">
-          <Image src="/logo-dark.png" alt="CertPlan" width={72} height={72} className="block dark:hidden" />
-          <Image src="/logo-light.png" alt="CertPlan" width={72} height={72} className="hidden dark:block" />
+          <Image src="/logo-dark.png" alt="certplan" width={72} height={72} className="block dark:hidden" />
+          <Image src="/logo-light.png" alt="certplan" width={72} height={72} className="hidden dark:block" />
         </div>
         <h1 className="text-5xl font-bold tracking-tight leading-tight">
           Plan your certification<br />journey

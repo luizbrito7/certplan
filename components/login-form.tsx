@@ -50,7 +50,7 @@ export function LoginForm({
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Sign in</CardTitle>
-          <CardDescription>Welcome back to CertPlan</CardDescription>
+          <CardDescription>Welcome back to certplan</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <OAuthButtons />

@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
     if (!email) continue
 
     const { error: sendError } = await resend.emails.send({
-      from: "CertPlan <noreply@certplan.app>",
+      from: "certplan <noreply@certplan.app>",
       to: email,
       subject: `Reminder: ${certName} exam ${daysUntil === 1 ? "tomorrow" : `in ${daysUntil} days`}`,
       html: ReminderEmailHtml({ userName, certName, examDate, daysUntil }),

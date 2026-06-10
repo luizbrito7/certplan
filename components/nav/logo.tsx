@@ -5,10 +5,10 @@ import Link from "next/link"
 
 export function Logo({ href = "/" }: { href?: string }) {
   return (
-    <Link href={href} className="flex items-center gap-2" aria-label="CertPlan home">
+    <Link href={href} className="flex items-center gap-2" aria-label="certplan home">
       <Image
         src="/logo-dark.png"
-        alt="CertPlan"
+        alt="certplan"
         width={32}
         height={32}
         className="block dark:hidden"
@@ -16,13 +16,13 @@ export function Logo({ href = "/" }: { href?: string }) {
       />
       <Image
         src="/logo-light.png"
-        alt="CertPlan"
+        alt="certplan"
         width={32}
         height={32}
         className="hidden dark:block"
         priority
       />
-      <span className="font-bold text-lg tracking-tight">CertPlan</span>
+      <span className="font-bold text-lg tracking-tight">certplan</span>
     </Link>
   )
 }

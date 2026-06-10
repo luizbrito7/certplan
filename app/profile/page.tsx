@@ -6,7 +6,7 @@ import { CertManager } from "@/components/profile/cert-manager"
 import { ProfileForm } from "@/components/profile/profile-form"
 import type { Certification, UserCertification } from "@/lib/types"
 
-export const metadata = { title: "My Profile — CertPlan" }
+export const metadata = { title: "My Profile — certplan" }
 
 export default async function ProfilePage() {
   const supabase = await createClient()
