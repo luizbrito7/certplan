@@ -1,0 +1,191 @@
+"use client"
+
+import { useState } from "react"
+import { Check, ChevronsUpDown, PlusCircle, Loader2 } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { createCustomCertification } from "@/lib/actions/certifications"
+import type { Certification, Vendor } from "@/lib/types"
+import { VENDOR_LABELS } from "@/lib/types"
+import { toast } from "sonner"
+
+interface CertComboboxProps {
+  certifications: Certification[]
+  value?: string
+  onChange: (cert: Certification) => void
+}
+
+export function CertCombobox({ certifications, value, onChange }: CertComboboxProps) {
+  const [open, setOpen] = useState(false)
+  const [customOpen, setCustomOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [certs, setCerts] = useState(certifications)
+  const [customName, setCustomName] = useState("")
+  const [customVendor, setCustomVendor] = useState<Vendor>("other")
+  const [customCode, setCustomCode] = useState("")
+
+  const selected = certs.find(c => c.id === value)
+
+  async function handleCreateCustom() {
+    if (!customName.trim()) return
+    setLoading(true)
+    const { data, error } = await createCustomCertification({
+      name: customName.trim(),
+      vendor: customVendor,
+      code: customCode.trim() || undefined,
+    })
+    setLoading(false)
+    if (error || !data) {
+      toast.error(error ?? "Failed to create certification")
+      return
+    }
+    setCerts(prev => [...prev, data])
+    onChange(data)
+    setCustomOpen(false)
+    setOpen(false)
+    setCustomName("")
+    setCustomCode("")
+    setCustomVendor("other")
+    toast.success("Custom certification added")
+  }
+
+  return (
+    <>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-full justify-between font-normal"
+          >
+            <span className="truncate">
+              {selected
+                ? `${selected.name}${selected.code ? ` (${selected.code})` : ""}`
+                : "Select certification…"}
+            </span>
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[340px] p-0" align="start">
+          <Command>
+            <CommandInput placeholder="Search certifications…" />
+            <CommandList>
+              <CommandEmpty>No certification found.</CommandEmpty>
+              {(["aws", "azure", "cisco", "kubernetes", "gcp", "other"] as Vendor[]).map(vendor => {
+                const group = certs.filter(c => c.vendor === vendor)
+                if (!group.length) return null
+                return (
+                  <CommandGroup key={vendor} heading={VENDOR_LABELS[vendor]}>
+                    {group.map(cert => (
+                      <CommandItem
+                        key={cert.id}
+                        value={`${cert.name} ${cert.code ?? ""}`}
+                        onSelect={() => {
+                          onChange(cert)
+                          setOpen(false)
+                        }}
+                      >
+                        <Check className={cn("mr-2 h-4 w-4", value === cert.id ? "opacity-100" : "opacity-0")} />
+                        <span className="flex-1">{cert.name}</span>
+                        {cert.code && (
+                          <span className="ml-2 text-xs text-muted-foreground">{cert.code}</span>
+                        )}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                )
+              })}
+              <CommandSeparator />
+              <CommandGroup>
+                <CommandItem
+                  onSelect={() => { setCustomOpen(true); setOpen(false) }}
+                  className="text-primary"
+                >
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add custom certification
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+
+      <Dialog open={customOpen} onOpenChange={setCustomOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Custom Certification</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <Label>Name *</Label>
+              <Input
+                placeholder="e.g. Red Hat RHCSA"
+                value={customName}
+                onChange={e => setCustomName(e.target.value)}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Vendor</Label>
+              <Select value={customVendor} onValueChange={v => setCustomVendor(v as Vendor)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {(Object.entries(VENDOR_LABELS) as [Vendor, string][]).map(([v, label]) => (
+                    <SelectItem key={v} value={v}>{label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label>Code / Exam ID <span className="text-muted-foreground">(optional)</span></Label>
+              <Input
+                placeholder="e.g. EX200"
+                value={customCode}
+                onChange={e => setCustomCode(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setCustomOpen(false)}>Cancel</Button>
+            <Button onClick={handleCreateCustom} disabled={!customName.trim() || loading}>
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Add
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  )
+}
