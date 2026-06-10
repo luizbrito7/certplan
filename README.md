@@ -19,16 +19,17 @@ O coração do produto é uma visualização de calendário onde o usuário agen
 
 ## Funcionalidades
 
-- Autenticação com Supabase;
-- Login e cadastro por e-mail, GitHub e Google;
-- Calendário mensal para planejamento de exames;
-- Catálogo de certificações por fornecedor;
-- Cadastro de certificações personalizadas;
-- Perfil público com certificações conquistadas e em andamento;
-- Suporte a português e inglês;
-- Tema claro e escuro;
-- Lembretes por e-mail antes da data do exame;
-- Rotina cron para envio automático de lembretes.
+| Funcionalidade | Descrição |
+| --- | --- |
+| Autenticação | Login e cadastro com Supabase, e-mail, GitHub e Google. |
+| Calendário | Visualização mensal para planejar exames de certificação. |
+| Catálogo | Certificações organizadas por fornecedor. |
+| Certificações personalizadas | Cadastro de certificações que ainda não estão no catálogo. |
+| Perfil público | Exibição das certificações conquistadas e em andamento. |
+| Internacionalização | Suporte a português e inglês. |
+| Tema | Alternância entre tema claro e escuro. |
+| Lembretes por e-mail | Notificações antes da data do exame. |
+| Cron de lembretes | Rotina automática para envio dos lembretes. |
 
 
 ## Tecnologias utilizadas
