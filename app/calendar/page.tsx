@@ -27,14 +27,14 @@ export default async function CalendarPage() {
   const certifications = (certsRes.data ?? []) as Certification[]
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6">
+    <div className="flex flex-col flex-1 mx-auto w-full max-w-6xl px-4 py-6">
       <div className="mb-4">
         <h1 className="text-2xl font-bold tracking-tight">My Calendar</h1>
         <p className="text-sm text-muted-foreground mt-1">
           Click any day to schedule an exam, or click an event to view details.
         </p>
       </div>
-      <div className="h-[calc(100vh-180px)] min-h-[600px]">
+      <div className="flex-1 min-h-[600px] h-full">
         <CalendarGrid initialPlans={plans} certifications={certifications} />
       </div>
     </div>
