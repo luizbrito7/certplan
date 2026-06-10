@@ -37,12 +37,12 @@ export function EventEmblem({ plan, onClick }: EventEmblemProps) {
         <CertLogo
           cert={cert}
           className={cn(
-            "h-16 w-16",
+            "h-20 w-20",
             plan.status === "done" && "grayscale",
           )}
         />
       ) : (
-        <span className="h-16 w-16" />
+        <span className="h-20 w-20" />
       )}
       <span
         className={cn(
