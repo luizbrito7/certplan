@@ -97,10 +97,10 @@ export function CertCombobox({ certifications, value, onChange }: CertComboboxPr
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[340px] p-0" align="start">
+        <PopoverContent className="w-[460px] p-0" align="start">
           <Command>
             <CommandInput placeholder="Search certifications…" />
-            <CommandList>
+            <CommandList className="max-h-[320px]">
               <CommandEmpty>No certification found.</CommandEmpty>
               {(["aws", "azure", "cisco", "kubernetes", "gcp", "other"] as Vendor[]).map(vendor => {
                 const group = certs.filter(c => c.vendor === vendor)
@@ -115,11 +115,12 @@ export function CertCombobox({ certifications, value, onChange }: CertComboboxPr
                           onChange(cert)
                           setOpen(false)
                         }}
+                        className="py-2.5"
                       >
-                        <Check className={cn("mr-2 h-4 w-4", value === cert.id ? "opacity-100" : "opacity-0")} />
+                        <Check className={cn("mr-2 h-4 w-4 shrink-0", value === cert.id ? "opacity-100" : "opacity-0")} />
                         <span className="flex-1">{cert.name}</span>
                         {cert.code && (
-                          <span className="ml-2 text-xs text-muted-foreground">{cert.code}</span>
+                          <span className="ml-4 text-xs text-muted-foreground tabular-nums">{cert.code}</span>
                         )}
                       </CommandItem>
                     ))}
