@@ -124,7 +124,7 @@ export function EventDialog({ state, certifications, onClose, onSuccess }: Event
 
   return (
     <Dialog open={open} onOpenChange={v => !v && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {mode === "create" ? "Schedule Exam" : isViewMode ? "Exam Details" : "Edit Exam"}
