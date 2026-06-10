@@ -51,13 +51,21 @@ export function CertManager({ status, userCerts: initial, certifications, label 
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{label}</h3>
-      <div className="flex flex-wrap gap-2">
+      {label && (
+        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{label}</h3>
+      )}
+      <div className="grid gap-3 sm:grid-cols-2">
         {certs.map(uc => (
-          <CertBadge key={uc.id} userCert={uc} onRemove={handleRemove} removeLabel={t("removeCert")} />
+          <CertBadge
+            key={uc.id}
+            userCert={uc}
+            onRemove={handleRemove}
+            removeLabel={t("removeCert")}
+            muted={status === "seeking"}
+          />
         ))}
         {certs.length === 0 && !adding && (
-          <p className="text-sm text-muted-foreground">{t("noneYet")}</p>
+          <p className="text-sm text-muted-foreground sm:col-span-2">{t("noneYet")}</p>
         )}
       </div>
 

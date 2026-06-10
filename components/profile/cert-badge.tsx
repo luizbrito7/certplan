@@ -1,5 +1,6 @@
+import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { VENDOR_COLORS, VENDOR_LABELS } from "@/lib/types"
+import { VENDOR_LABELS } from "@/lib/types"
 import type { UserCertification } from "@/lib/types"
 import { CertLogo } from "@/components/icons/cert-logo"
 
@@ -8,37 +9,57 @@ interface CertBadgeProps {
   onRemove?: (id: string) => void
   removeLabel?: string
   className?: string
+  /** Dashed border + slightly muted badge — used for "seeking" certs */
+  muted?: boolean
 }
 
-export function CertBadge({ userCert, onRemove, removeLabel = "Remove", className }: CertBadgeProps) {
+export function CertBadge({
+  userCert,
+  onRemove,
+  removeLabel = "Remove",
+  className,
+  muted = false,
+}: CertBadgeProps) {
   const cert = userCert.certification
   if (!cert) return null
-
-  const colorClass = VENDOR_COLORS[cert.vendor]
 
   return (
     <div
       className={cn(
-        "flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium",
-        colorClass,
+        "relative group flex items-center gap-3 rounded-lg border bg-card p-3 transition-colors hover:bg-muted/40",
+        muted && "border-dashed",
         className,
       )}
     >
-      <CertLogo cert={cert} className="h-4 w-4 shrink-0" />
-      <span className="text-[10px] uppercase tracking-wider opacity-70">
-        {VENDOR_LABELS[cert.vendor]}
-      </span>
-      <span className="mx-0.5 opacity-30">·</span>
-      <span>{cert.name}</span>
-      {cert.code && <span className="text-xs opacity-60">({cert.code})</span>}
+      {/* Official badge image, or vendor glyph as fallback */}
+      <CertLogo
+        cert={cert}
+        className={cn("h-12 w-12 shrink-0 object-contain", muted && "opacity-75")}
+      />
+
+      {/* Name + vendor · code */}
+      <div className="flex-1 min-w-0 pr-4">
+        <p className="font-medium text-sm leading-snug">{cert.name}</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">
+          {VENDOR_LABELS[cert.vendor]}
+          {cert.code && (
+            <>
+              <span className="mx-1 opacity-40">·</span>
+              {cert.code}
+            </>
+          )}
+        </p>
+      </div>
+
+      {/* Remove button — visible on hover/focus (own profile only) */}
       {onRemove && (
         <button
           type="button"
           onClick={() => onRemove(userCert.id)}
-          className="ml-1 rounded-full opacity-50 hover:opacity-100 transition-opacity text-xs leading-none"
+          className="absolute right-2 top-2 rounded-full p-0.5 opacity-0 group-hover:opacity-50 hover:!opacity-100 focus:opacity-50 transition-opacity"
           aria-label={removeLabel}
         >
-          ✕
+          <X className="h-3.5 w-3.5" />
         </button>
       )}
     </div>

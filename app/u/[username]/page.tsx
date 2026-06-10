@@ -12,7 +12,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props) {
   const { username } = await params
-  return { title: `@${username} — certplan` }
+  return { title: `Certplan - @${username}` }
 }
 
 export default async function PublicProfilePage({ params }: Props) {
@@ -64,7 +64,7 @@ export default async function PublicProfilePage({ params }: Props) {
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
             {t("certifications")}
           </h2>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid gap-3 sm:grid-cols-2">
             {haveCerts.map(uc => <CertBadge key={uc.id} userCert={uc} />)}
           </div>
         </section>
@@ -78,8 +78,8 @@ export default async function PublicProfilePage({ params }: Props) {
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
               {t("workingTowards")}
             </h2>
-            <div className="flex flex-wrap gap-2">
-              {seekingCerts.map(uc => <CertBadge key={uc.id} userCert={uc} />)}
+            <div className="grid gap-3 sm:grid-cols-2">
+              {seekingCerts.map(uc => <CertBadge key={uc.id} userCert={uc} muted />)}
             </div>
           </section>
         </>
