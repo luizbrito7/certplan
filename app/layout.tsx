@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${lexend.variable} font-[family-name:var(--font-lexend)] antialiased`}>
+      <body className={`${lexend.variable} font-[family-name:var(--font-lexend)] antialiased flex flex-col min-h-svh`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -36,7 +36,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AppHeader />
-          <main>{children}</main>
+          <main className="flex flex-col flex-1">{children}</main>
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
